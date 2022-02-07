@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Sorokin S.A.</Authors>
+    <Description>Полезности для легкого развертывания Net Core инфраструктуры</Description>
+    <RepositoryUrl>https://git.severstal.severstalgroup.com/OAD/net-infrastructure</RepositoryUrl>
+	<Version>0.0.15</Version>
+    <PackageVersion>0.0.15</PackageVersion>
+    <AssemblyVersion>0.0.15.0</AssemblyVersion>
+    <FileVersion>0.0.15.0</FileVersion>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+    <PackageReference Include="FluentValidation" Version="9.4.0" />
+    <PackageReference Include="MediatR" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
+    <PackageReference Include="Npgsql" Version="5.0.1.1" />
+    <PackageReference Include="PolicyServer.Local" Version="2.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="5.6.3" />
+    <PackageReference Include="System.Text.Json" Version="4.7.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.1" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
+  </ItemGroup>
+ 
+
+</Project>
