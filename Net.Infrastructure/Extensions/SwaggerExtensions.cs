@@ -15,10 +15,6 @@ namespace Net.Infrastructure.Extensions
 {
     public static class SwaggerExtensions
     {
-        public static string AppName { get; set; }
-        public static string Version { get; set; } = "v1";
-        public static string[] Scopes { get; set; } = null;
-        public static Dictionary<string, string> DictionaryScopes { get; set; }
 
         //private static readonly IEnumerable<string> SwaggerXmlDocFiles = new List<string> { $"{Assembly.GetExecutingAssembly().GetName().Name}.xml" };
 
@@ -67,20 +63,25 @@ namespace Net.Infrastructure.Extensions
             }
         }
 
+        private static string _version;
+        private static string _appName;
+        private static string _description; 
         /// <summary>
         /// Добавление службы
         /// </summary>
-        /// <param name="services"></param>
-        /// <param name="appName"></param>
-        /// <param name="options"></param>
-        public static IServiceCollection AddSwagger(this IServiceCollection services, string currentHostUrl, Action<SwaggerGenOptions> options = null)
+        public static void AddSwaggerDocumentation(
+            this IServiceCollection services,
+            string version,
+            string appName,
+            string description)
         {
-            var swaggerApplicationDescription = $"Api for information by {AppName}";
+            _version = version;
+            _appName = appName;
+            _description = description;
 
-            var authorizationUrl = (currentHostUrl + "/account/sign-in-by-credential").ToUri();
-
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
+                /*
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = "Please insert authorization token",
@@ -92,36 +93,32 @@ namespace Net.Infrastructure.Extensions
                 });
 
                 c.OperationFilter<SecurityRequirementsOperationFilter>();
-
-                c.SwaggerDoc(
-                    Version,
+                */
+                options.SwaggerDoc(
+                    version,
                     new OpenApiInfo
                     {
-                        Version = Version,
-                        Title = AppName,
-                        Description = swaggerApplicationDescription
+                        Version = version,
+                        Title = appName,
+                        Description = description
                     });
 
-                c.IgnoreObsoleteActions();
+                options.IgnoreObsoleteActions();
 
                 // Set the comments path for the Swagger JSON and UI.
                 //foreach (var swaggerXmlDocFile in SwaggerXmlDocFiles)
                 //    c.IncludeXmlComments(swaggerXmlDocFile);
-                
-                options?.Invoke(c);
             });
-
-
-            return services;
-        }
+        } 
 
         /// <summary>
         /// Middleware для подключения настроек сваггера
         /// </summary>
         /// <param name="app"></param>
-        public static IApplicationBuilder UseSwaggerDocumentation(this IApplicationBuilder app)
+        public static void UseSwaggerDocumentation(
+            this IApplicationBuilder app)
         {
-            app.UseSwagger(options =>
+            app.UseSwagger(/*options =>
             {
 
                 // Принудительная замена BasePath урлов свагера на https для кубера
@@ -139,18 +136,16 @@ namespace Net.Infrastructure.Extensions
                         //var headers = request.Headers.ToList();
                     //}
                 });
-            });
+            }*/);
             app.UseSwaggerUI(
                     options =>
                     {
-                        options.SwaggerEndpoint($"/swagger/{Version}/swagger.json", $"{AppName} {Version}");
-                        options.OAuthAppName(AppName);
+                        options.SwaggerEndpoint($"/swagger/{_version}/swagger.json", $"{_appName} {_version}");
+                        options.OAuthAppName(_appName);
                         //options.OAuthClientId(AuthOptions.ClientId);
                         //options.OAuthClientSecret(AuthOptions.ClientSecret);
                         options.DocExpansion(DocExpansion.None);
                     });
-
-            return app;
         }
     }
 }
